@@ -78,3 +78,17 @@ input #male, #female, #other {
   color: black;
   border-radius: 5px;
 }
+td,th{
+    font-size:15px;
+     padding: 5px 5px;
+     text-align: center;
+ }
+ .pagination a {
+     color: #fff;
+ }
+::placeholder{
+    color:#97ABB1;
+}
+label { 
+    color:#111;
+ }

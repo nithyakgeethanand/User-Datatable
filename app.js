@@ -31,8 +31,8 @@ function displayTable(data) {
             <td>${state}</td>
             <td>${city}</td>
             <td>${date}</td>
-            <td><button id="delete-${id}" class="delete-btn btn blue lighten-2" onclick="onDeleterow(this)">DELETE</button>
-            &nbsp <button id="edit-${id}" class="edit-btn btn blue lighten-2" onclick="onEditrow(this);show();">EDIT</button></td>
+            <td><button id="delete-${id}" class="delete-btn btn blue lighten-2" onclick="onDeleterow(this)"><i class="far fa-trash-alt"></i></button>
+            &nbsp <button id="edit-${id}" class="edit-btn btn blue lighten-2" onclick="onEditrow(this);"><i class="far fa-edit"></i></button></td>
         </tr>`;
     })
     document.getElementById("output").innerHTML = listOfUser;
@@ -60,7 +60,7 @@ function displayTable(data) {
         const start = page * no;
         const end = page * no + no;
         const action = dataList.slice(start, end);
-        displayTable(data);
+        // displayTable(data);
         displayTable(action);
     })
 
@@ -108,7 +108,7 @@ firstNameSort.addEventListener('click', (e) => {
             isAscFirstName = false;
             var firstName = a.firstName.toLowerCase();
             var secondName = b.firstName.toLowerCase();
-            // Ternary Operator (if it will check the condition ) then -1 else if()
+            // Ternary Operator (if, it will check the condition ) then -1 else if()
             return (firstName < secondName) ? -1 : (firstName > secondName) ? 1 : 0;
     })
     } else {
@@ -149,7 +149,7 @@ dateSort.addEventListener('click', (e) => {
     displayTable(dataList);
 })
 
-
+// Delete Row
 function onDeleterow(data) {  
     //delete-1 => 1 
     const confirm = window.confirm("Do you want to Delete?");
@@ -157,14 +157,15 @@ function onDeleterow(data) {
         const idForDelete = (data.id).substring(7,10);
         console.log(idForDelete);
         const filterList = dataList.filter(data => (data.id) !== parseInt(idForDelete));  
-        alert("Deleted Successfully!!!!");
+        window.confirm("Deleted Successfully!!!!");
         displayTable(filterList);   
            
     }
     // console.log("click on this button" , data.id);
     
 }
-
+let idToDelete;
+// Edit Row
 function onEditrow(data) {
     //edit-1 => 1 
     const confirm = window.confirm("Do you want to Edit details?");
@@ -172,16 +173,32 @@ function onEditrow(data) {
         const idForEdit = (data.id).substring(5,10);
         console.log(idForEdit);
         const dataToEdit = dataList.filter(data => (data.id) === parseInt(idForEdit)); 
-        console.log(dataToEdit);
+        console.log("hihghglvjfzbljhd",dataToEdit[0]);
+        const editUser = dataToEdit[0];
+        idToDelete = editUser.id;
+        // fetch a object
+
+        document.getElementById('reg-id').value = editUser.id;
+        document.getElementById('reg-salutation').value = editUser.salutation;
+        document.getElementById('reg-firstname').value =editUser.firstName;
+        document.getElementById('reg-lastname').value = editUser.lastName;
+        document.getElementById('reg-email').value = editUser.email;
+        document.getElementsByName('gender').value = editUser.gender;
+        document.getElementById('reg-phoneNo').value = editUser.phoneNo;
+        document.getElementById('reg-sel1').value = editUser.country;
+        document.getElementById('reg-sel2').value = editUser.state;
+        document.getElementById('reg-city').value = editUser.city;
         show();
         
       //  displayTable(filterList);      
     }   
 }
+
 // Hide the data onLoad
 
 function hide() {
     document.getElementById('popup').style.display = 'none';
+    document.getElementById('popup').reset();
 };
 function show() {
     document.getElementById('popup').style.display = 'block';
@@ -190,6 +207,12 @@ function show() {
 // Add User Save 
 
 function saveForm() {
+    
+    if(idToDelete !== '') {
+        dataList = dataList.filter(data => (data.id) !== parseInt(idToDelete));
+        idToDelete = '';
+    } 
+
     const id = document.getElementById('reg-id').value;
     if (id === '') {
         alert("Please Enter your ID ");
@@ -260,16 +283,19 @@ function saveForm() {
     displayTable(dataList);
     console.log(dataList);
     alert("Saved Successfully!!!!");
+    document.getElementById('popup').reset();
+    hide();
 }
 
 
 // Display State based On COUNTRY 
     
     const selectedCountry = document.getElementById('reg-sel1');
-    selectedCountry.addEventListener('blur', (e) => {
+    selectedCountry.addEventListener('click', (e) => {
         let displayState = '';
         console.log(displayState);
         if(selectedCountry.value === 'India') {
+            document.getElementById('reg-sel2').value = '';
             const indiaState = ['Kerala','Tamil Nadu','Karnataka',
                            'Telangana','Andhra Pradesh','Arunachal Pradesh',
                            'Assam','Bihar', 'Chhattisgarh', 'Goa', 'Gujarat'];
@@ -279,15 +305,23 @@ function saveForm() {
                 <option>${state}</option>`
             }); 
             console.log(displayState);
-        } else {
+            document.getElementById("reg-sel2").innerHTML = displayState;
+
+        } 
+        if(selectedCountry.value === 'Australia') {
+            document.getElementById('reg-sel2').value = '';
             const australiaState = ['Victoria','New South Wales','Queensland','South Australia','Tasmania','Western Australia'];
             australiaState.forEach( state => {
                 displayState += `
                 <option>${state}</option> `
             }); 
             console.log(displayState);
+            document.getElementById("reg-sel2").innerHTML = displayState;
         }
-        document.getElementById("reg-sel2").innerHTML = displayState;
+        
     }) 
+
    
+
+
    
