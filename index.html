@@ -45,10 +45,7 @@
         </form>
       </div> 
     </div>
-    <!-- <ul class="right">
-      <li><a href="#" class="add-btn btn blue lighten-2" onclick="hidePopUp()">ADD NEW USER</a></li>
-    </ul> -->
-<!--  -->
+  
 <div class="right">
   <button type="button" id="button" class="add-btn btn blue lighten-2" onclick="show()">ADD NEW USER</button>
 </div>
@@ -59,6 +56,8 @@
           <div class="form-element">
             <label for="reg-id">ID</label>
             <input type="text" id="reg-id" placeholder="Enter Your Id">
+            <p id="error-id" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">Please Enter your ID(You Can only enter 2 digit as ID)</p>
+            <p id="error-unique" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">ID Already Exist</p>
           </div>
           <div class="form-element">
             <label for="reg-salutation">Salutation</label>
@@ -72,24 +71,25 @@
           <div class="form-element">
               <label for="reg-firstname">FirstName</label>
               <input type="text" id="reg-firstname" placeholder="Enter First Name">
+              <p id="error-fn" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">Please Enter your First Name</p>
           </div>
           <div class="form-element">
               <label for="reg-lastname">LastName</label>
               <input type="text" id="reg-lastname" placeholder="Enter Last Name">
+              <p id="error-ln" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">Please Enter your Last Name</p>
           </div>
           <div class="form-element">
               <label for="reg-email">Email</label>
               <input type="text" id="reg-email" placeholder="Enter Email">
+              <p id="error-email" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">Please Enter your Email</p>
           </div>
          
           <div class="form-element">
               <label for="reg-phoneNo">Phone No</label>
               <input type="Number" id="reg-phoneNo" placeholder="Enter Phone No">
+              <p id="error-phoneno" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;"></p>
           </div>
-          <!-- <div class="form-element">
-            <label for="reg-date">Date</label>
-            <input type="text" id="reg-date" placeholder="Enter date">
-        </div> -->
+        
           <div class="form-element">
               <p>Gender</p>
               <input type="radio" id="male" name="gender" value="Male">
@@ -102,7 +102,6 @@
           <div class="form-element">
               <label for="reg-sel1">Country</label>
               <select id="reg-sel1" name="country" >
-                  <!-- <option>--Select Country--</option> -->
                   <option>India</option>
                   <option>Australia</option>   
               </select>
@@ -111,37 +110,15 @@
               <div id="reg-states">
                   <label for="reg-sel2">State</label>
                   <select class="form-select" id="reg-sel2">
-                      <!-- <option>--Select State--</option>
-                      <option>Kerala</option>
-                      <option>Tamil Nadu</option>
-                      <option>Karnataka</option>
-                      <option>Telangana</option>
-                      <option>Andhra Pradesh</option>
-                      <option>Arunachal Pradesh</option>
-                      <option>Assam</option>
-                      <option>Bihar</option>
-                      <option>Chhattisgarh</option>
-                      <option>Goa</option>
-                      <option>Gujarat</option>
-                      <option>Haryana</option>
-                      <option>Himachal Pradesh</option>
-                      <option>Jharkhand</option> -->
+                     
                   </select>
               </div>
           </div>
           <div class="form-element">
             <label for="reg-city">City</label>
             <input type="text" id="reg-city" placeholder="Enter city name">
-              <!-- <select id="reg-city" name="city" > -->
-                  <!-- <option>--Select City--</option>
-                  <option>Trivandrum</option>
-                  <option>Bangalore</option> 
-                  <option>Hyderabad</option>
-                  <option>Amaravati</option>
-                  <option>Itanagar</option>
-                  <option>Patna</option>  
-                  <option>Dispur</option> -->
-              <!-- </select> -->
+            <p id="error-city" style="color:red; display:none; margin-top: 0; font-size: .8rem; margin-bottom: 5px;">Enter your City</p>
+             
           </div>
           
       </div>
@@ -163,7 +140,7 @@
             <tr>
                 <th>ID</th>
                 <th>Salutation</th>
-                <th>First Name <button id="fname-sort"><i class="fas fa-sort"></i></button> </th>
+                <th>First Name <button id="fname-sort" style="color:#fff; background: #5BB6EB;"><i class="fas fa-sort"></i></button> </th>
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Gender</th>
@@ -171,23 +148,22 @@
                 <th>Country</th>
                 <th>State</th>
                 <th>City</th>
-                <th>Date<button id="date-sort"><i class="fas fa-sort"></i></button> </th>
+                <th>Date <button id="date-sort" style="color:#fff; background: #5BB6EB;"><i class="fas fa-sort"></i></button> </th>
                 <th class="text-center">Options</th>
             </tr>
         </thead>
         <tbody id="output"></tbody>
     </table>
-    <!-- <i class="far fa-arrow-alt-circle-right right "></i> -->
-    <div id="showpage">
-      <select name="" id="page" hidden>
-          <option value="8" selected>8</option>
-      </select>
+  
       <div class="pagination">
-          <a href="#" id="previ" class="save-btn btn blue lighten-2"><i class="fas fa-backward"></i></a>
-          <a href="#" id="next" class="save-btn btn blue lighten-2"><i class="fas fa-forward"></i></a>
-          <a href="#" id="all" class="save-btn btn blue lighten-2">All</a>
+          <a href="#" id="previ" style="background: #56ABF4; width: 90px; margin-right: 10px; padding-right: 10px; ">Previous</a>
+          <a href="#" id="next" style="background: #56ABF4; width: 80px; margin-right: 10px;">Next</a>
+          <a href="#" id="all" style="background: #56ABF4; width: 50px; margin-right: 10px;">All</a>
       </div>
-  </div>
+
+  <div class="removed"> user has been deleted !!</div>
+    <div class="addalert">User added sucessfully !!</div>
+    
     
     <script
     src="https://code.jquery.com/jquery-3.2.1.min.js"

@@ -61,7 +61,8 @@ input #male, #female, #other {
 }
 .pagination{
     margin-top: 5px;
-    padding-left:1000px;
+    float:right;
+    display: flex;
 }
 .pagination a {
   color: black;
@@ -80,6 +81,7 @@ input #male, #female, #other {
 }
 td,th{
     font-size:15px;
+    border: solid  1px #C0C4D1;
      padding: 5px 5px;
      text-align: center;
  }
@@ -92,3 +94,44 @@ td,th{
 label { 
     color:#111;
  }
+i:hover {
+    color: black;
+}
+tr:nth-child(even) {background-color: #D0EBFC;}
+th
+ {background-color: #D0EBFC;}
+
+ .removed {
+    position: fixed;
+    top: 4px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 400px;
+    padding: 6px;
+    background-color: #111;
+    color: white;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+    font-size: larger;
+  }
+  .addalert {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 400px;
+    padding: 6px;
+    background-color: #111;
+    color: white;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+    font-size: larger;
+  }

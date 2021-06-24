@@ -1,5 +1,17 @@
 let dataList;
 let page = 0;
+let pageno = 0;
+
+function pagination(list) {
+    // const no = parseInt(document.getElementById('page').value);
+    const no = Math.floor(dataList.length/3);
+    pageno = Math.floor(dataList.length/3);
+    // console.log("length lenth ++++++",Math.floor(no/8));
+        const start = page * no;
+        const end = page * no + no;
+        const action = list.slice(start, end);
+        displayTable(action);
+}
 
 function displayTable(data) {
     let listOfUser ='';
@@ -56,29 +68,42 @@ function displayTable(data) {
     })
     .then(function (data) {
         dataList = data;
-        const no = parseInt(document.getElementById('page').value);
-        const start = page * no;
-        const end = page * no + no;
-        const action = dataList.slice(start, end);
-        // displayTable(data);
-        displayTable(action);
+        // const no = parseInt(document.getElementById('page').value);
+        // const start = page * no;
+        // const end = page * no + no;
+        // const action = dataList.slice(start, end);
+        
+        // displayTable(action);
+        pagination(dataList);
     })
 
 
 document.getElementById("previ").addEventListener("click", function () {
     // alert("Hai");
-    const no = parseInt(document.getElementById('page').value);
-    const start = page * no;
-    const end = page * no + no;
+    // const no = parseInt(document.getElementById('page').value);
+    const no = Math.floor(dataList.length/3);
+    const start = page * no; //0
+    const end = page * no + no; //8
+    console.log('pagination',start,end);
     const action = dataList.slice(start, end);
+    // if(end <= dataList.length){
+    //     document.getElementById("next").style.display = 'block';
+    // }
+    document.getElementById("next").style.display = 'block';
+    pageno = Math.floor(dataList.length/3);
     console.log(action);
     displayTable(action);
 })
 document.getElementById("next").addEventListener("click", function () {
-    const no = parseInt(document.getElementById('page').value);
-    const start = no;
-    const end = no + 9;
+    // const no = parseInt(document.getElementById('page').value);
+    // const no = Math.floor(dataList.length/3);
+    const start = pageno;
+    pageno = pageno + pageno;
+    const end = pageno;
     const action = dataList.slice(start, end);
+    if(dataList.length-end < 0 ) {
+        document.getElementById("next").style.display = 'none';
+    }
     console.log(action);
     displayTable(action);
 })
@@ -95,7 +120,7 @@ searchUser.addEventListener('keyup', (e) => {
         const userText = e.target.value;
         const filterList = dataList.filter(data => (data.firstName.toLowerCase()).match(userText.toLowerCase()));         
         console.log(filterList);
-        displayTable(filterList);
+        pagination(filterList);
 })
 
 // First Name sort 
@@ -120,7 +145,7 @@ firstNameSort.addEventListener('click', (e) => {
             return (firstName < secondName) ? 1 : (firstName > secondName) ? -1 : 0;
         })
     }
-    displayTable(dataList);
+    pagination(dataList);
 })
 
 // Date Sorted
@@ -146,7 +171,7 @@ dateSort.addEventListener('click', (e) => {
             return (secondDate - date);
         })
     }
-    displayTable(dataList);
+    pagination(dataList);
 })
 
 // Delete Row
@@ -157,8 +182,10 @@ function onDeleterow(data) {
         const idForDelete = (data.id).substring(7,10);
         console.log(idForDelete);
         const filterList = dataList.filter(data => (data.id) !== parseInt(idForDelete));  
-        window.confirm("Deleted Successfully!!!!");
-        displayTable(filterList);   
+        deletemsg();
+        // window.confirm("Deleted Successfully!!!!");
+        pagination(filterList);   
+        
            
     }
     // console.log("click on this button" , data.id);
@@ -173,7 +200,7 @@ function onEditrow(data) {
         const idForEdit = (data.id).substring(5,10);
         console.log(idForEdit);
         const dataToEdit = dataList.filter(data => (data.id) === parseInt(idForEdit)); 
-        console.log("hihghglvjfzbljhd",dataToEdit[0]);
+        // console.log("hi",dataToEdit[0]);
         const editUser = dataToEdit[0];
         idToDelete = editUser.id;
         // fetch a object
@@ -189,8 +216,8 @@ function onEditrow(data) {
         document.getElementById('reg-sel2').value = editUser.state;
         document.getElementById('reg-city').value = editUser.city;
         show();
-        
-      //  displayTable(filterList);      
+       
+           
     }   
 }
 
@@ -207,48 +234,26 @@ function show() {
 // Add User Save 
 
 function saveForm() {
+   
     
+
     if(idToDelete !== '') {
         dataList = dataList.filter(data => (data.id) !== parseInt(idToDelete));
         idToDelete = '';
     } 
-
+    
     const id = document.getElementById('reg-id').value;
-    if (id === '') {
-        alert("Please Enter your ID ");
-        show();
-        return;
-    }
+  
     const salutation = document.getElementById('reg-salutation').value;
-    if (salutation === '') {
-        alert("Please Enter your Salutation");
-        show();
-        return;
-    }
+    
     const firstName = document.getElementById('reg-firstname').value;
-    if (firstName === '') {
-        alert("Please Enter your First Name ");
-        show();
-        return;
-    }
+   
     const lastName = document.getElementById('reg-lastname').value;
-    if (lastName === '') {
-        alert("Please Enter your Last Name ");
-        show();
-        return;
-    }
+   
     const email = document.getElementById('reg-email').value;
-    if (email === '') {
-        alert("Please Enter your Email");
-        show();
-        return;
-    }
+   
     const phoneNo = document.getElementById('reg-phoneNo').value;
-    if (phoneNo === '') {
-        alert("Please Enter your Phone Number");
-        show();
-        return;
-    }
+   
     let newEntry = {};
     
     newEntry.id = id;
@@ -258,16 +263,11 @@ function saveForm() {
     newEntry.email = email;
     newEntry.phoneNo = phoneNo;
 
-    // const date = document.getElementById('reg-date').value;
-    // const today = Date.now;
     var date = new Date();
     var dd = String(date.getDate()).padStart(2, '0');
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
-
     date = mm + '/' + dd + '/' + yyyy;
-    // document.write(date);
-    // const date = new Date(timeElapsed);
     newEntry.date = date;
 
     const gender = document.querySelector('[name="gender"]:checked').value;
@@ -280,9 +280,9 @@ function saveForm() {
     newEntry.city = city;
     console.log(newEntry);
     dataList.push(newEntry);
-    displayTable(dataList);
+    pagination(dataList);
     console.log(dataList);
-    alert("Saved Successfully!!!!");
+    addAlert();
     document.getElementById('popup').reset();
     hide();
 }
@@ -321,7 +321,117 @@ function saveForm() {
         
     }) 
 
-   
+        const id = document.getElementById('reg-id');
+        id.addEventListener('blur',(e) => {
+           
+                const re = /^[0-9]{2}$/;
+                const errorid = document.getElementById('error-id');
+                const errormessageunique = document.getElementById('error-unique');
+                errormessageunique.style.display = 'none'; 
 
+                if(!re.test(id.value)) {
 
+                    errorid.style.display = 'block';
+                    errormessageunique.style.display = 'none'; 
+                } else {
+                   
+                    errorid.style.display = 'none';
+                   const user = dataList.filter(data => data.id === parseInt(id.value));
+                   console.log("idddd",user[0]);
+                   if(user.length > 0  ) {
+                       errormessageunique.style.display = 'block';
+                   }              
+                }
+            }
+            );
+ 
+        const firstName = document.getElementById('reg-firstname');
+
+        firstName.addEventListener('blur',(e) => {
+           
+            const re = /^[a-zA-Z]{2,15}$/;
+            const errorfn = document.getElementById('error-fn');
+            console.log("eroooooooooooooooooooooooo",errorfn);
+            if(!re.test(firstName.value)) {
+                
+                errorfn.style.display = 'block';
+                
+            } else {
+                errorfn.style.display = 'none';
+            }
+        } );  
+
+        const lastName = document.getElementById('reg-lastname');
+
+        lastName.addEventListener('blur',(e) => {
+           
+            const re = /^[a-zA-Z]{2,15}$/;
+            const errorln = document.getElementById('error-ln');
+            if(!re.test(lastName.value)) {
+                
+                errorln.style.display = 'block';
+                
+            } else {
+                errorln.style.display = 'none';
+            }
+        } );  
+ 
+        const email = document.getElementById('reg-email');
+        email.addEventListener('blur',(e) => {
+           
+            const re =  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+            const erroremail = document.getElementById('error-email');
+           
+            if(!re.test(email.value)) {
+                
+                erroremail.style.display = 'block';
+                
+            } else {
+                erroremail.style.display = 'none';
+            }
+        } );  
+  
+        const phoneNo = document.getElementById('reg-phoneNo');
+        phoneNo.addEventListener('blur',(e) => {
+           
+            const re =  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+            const errorphoneno = document.getElementById('error-phoneno');
+           
+            if(!re.test(phoneNo.value)) {
+                
+                errorphoneno.style.display = 'block';
+                
+            } else {
+                errorphoneno.style.display = 'none';
+            }
+        } );  
+  
+        const city = document.getElementById('reg-city');
+        city.addEventListener('blur',(e) => {
+           
+            const re = /^[a-zA-Z]{2,15}$/;
+            const errorcity = document.getElementById('error-city');
+            if(!re.test(city.value)) {
+                
+                errorcity.style.display = 'block';
+                
+            } else {
+                errorcity.style.display = 'none';
+            }
+        } );  
    
+    function deletemsg() {
+        document.querySelector(".removed").style.visibility = "visible";
+        setTimeout(function () {
+            document.querySelector(".removed").style.visibility = "hidden";
+        }, 2000);
+    };
+    function addAlert() {
+        document.querySelector(".addalert").style.visibility = "visible";
+        setTimeout(function () {
+            document.querySelector(".addalert").style.visibility = "hidden";
+        }, 3000);
+    };
+
+ 
+
