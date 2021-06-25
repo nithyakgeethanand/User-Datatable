@@ -199,10 +199,31 @@ function onEditrow(data) {
         document.getElementById('reg-firstname').value =editUser.firstName;
         document.getElementById('reg-lastname').value = editUser.lastName;
         document.getElementById('reg-email').value = editUser.email;
-        document.getElementsByName('gender').value = editUser.gender;
+
+        const male = document.getElementById('male').value;
+        if(male === editUser.gender) {
+            document.getElementById('male').checked = true;
+        }
+        const female = document.getElementById('female').value;
+        if(female === editUser.gender) {
+            document.getElementById('female').checked = true;
+        }
+        const other = document.getElementById('other').value;
+        if(other === editUser.gender) {
+            document.getElementById('other').checked = true;
+        }
+        // document.getElementsByName('gender').value = editUser.gender;
+               
         document.getElementById('reg-phoneNo').value = editUser.phoneNo;
         document.getElementById('reg-sel1').value = editUser.country;
         document.getElementById('reg-sel2').value = editUser.state;
+
+      //  const state = document.getElementById('reg-sel2').options.selectedIndex
+        // if(state === editUser.state) {
+            /* forEach(state => {
+                
+            }) */
+        // }
         document.getElementById('reg-city').value = editUser.city;
         show();
        
