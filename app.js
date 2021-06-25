@@ -68,12 +68,6 @@ function displayTable(data) {
     })
     .then(function (data) {
         dataList = data;
-        // const no = parseInt(document.getElementById('page').value);
-        // const start = page * no;
-        // const end = page * no + no;
-        // const action = dataList.slice(start, end);
-        
-        // displayTable(action);
         pagination(dataList);
     })
 
@@ -86,17 +80,13 @@ document.getElementById("previ").addEventListener("click", function () {
     const end = page * no + no; //8
     console.log('pagination',start,end);
     const action = dataList.slice(start, end);
-    // if(end <= dataList.length){
-    //     document.getElementById("next").style.display = 'block';
-    // }
     document.getElementById("next").style.display = 'block';
     pageno = Math.floor(dataList.length/3);
     console.log(action);
     displayTable(action);
 })
 document.getElementById("next").addEventListener("click", function () {
-    // const no = parseInt(document.getElementById('page').value);
-    // const no = Math.floor(dataList.length/3);
+  
     const start = pageno;
     pageno = pageno + pageno;
     const end = pageno;
@@ -185,7 +175,6 @@ function onDeleterow(data) {
         deletemsg();
         // window.confirm("Deleted Successfully!!!!");
         pagination(filterList);   
-        
            
     }
     // console.log("click on this button" , data.id);
@@ -337,7 +326,7 @@ function saveForm() {
                    
                     errorid.style.display = 'none';
                    const user = dataList.filter(data => data.id === parseInt(id.value));
-                   console.log("idddd",user[0]);
+                //    console.log("idddd",user[0]);
                    if(user.length > 0  ) {
                        errormessageunique.style.display = 'block';
                    }              
@@ -351,7 +340,7 @@ function saveForm() {
            
             const re = /^[a-zA-Z]{2,15}$/;
             const errorfn = document.getElementById('error-fn');
-            console.log("eroooooooooooooooooooooooo",errorfn);
+            // console.log("er",errorfn);
             if(!re.test(firstName.value)) {
                 
                 errorfn.style.display = 'block';
