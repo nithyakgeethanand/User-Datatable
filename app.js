@@ -106,12 +106,61 @@ const searchUser = document.getElementById('search-user');
 
 // Search input Eventlistner
 searchUser.addEventListener('keyup', (e) => {
-      // Get input text
+    //   Get input text
         const userText = e.target.value;
-        const filterList = dataList.filter(data => (data.firstName.toLowerCase()).match(userText.toLowerCase()));         
-        console.log(filterList);
+        const filterList = dataList.filter(data => 
+  
+            (data.firstName.toLowerCase()).match(userText.toLowerCase()) 
+            || (data.lastName.toLowerCase()).match(userText.toLowerCase()) 
+            || (data.email.toLowerCase()).match(userText.toLowerCase())
+            || (data.country.toLowerCase()).match(userText.toLowerCase())
+            || (data.state.toLowerCase()).match(userText.toLowerCase())
+            || (data.city.toLowerCase()).match(userText.toLowerCase())
+            || (data.salutation.toLowerCase()).match(userText.toLowerCase())
+            || (data.gender.toLowerCase()).match(userText.toLowerCase())
+            || (data.phoneNo.toString()).match(userText.toLowerCase())
+            || (data.date.toLowerCase()).match(userText.toLowerCase())
+            || (data.id.toString()).match(userText.toLowerCase())
+        );  
+        
+        // console.log(filterList);
         pagination(filterList);
+       
 })
+const indiaState = ['Kerala','Tamil Nadu','Karnataka',
+'Telangana','Andhra Pradesh','Arunachal Pradesh',
+'Assam','Bihar', 'Chhattisgarh', 'Goa', 'Gujarat'];
+const australiaState = ['Victoria','New South Wales','Queensland','South Australia','Tasmania','Western Australia'];
+
+function stateSelection(country) {
+    let displayState = '';
+   
+    if(country === 'India') {
+        document.getElementById('reg-sel2').value = '';
+       
+        indiaState.forEach( state => {
+            displayState += `
+            <option>${state}</option>`
+        }); 
+        // console.log(displayState);
+        document.getElementById("reg-sel2").innerHTML = displayState;
+
+    } 
+    if(country === 'Australia') {
+        document.getElementById('reg-sel2').value = '';
+       
+        australiaState.forEach( state => {
+            displayState += `
+            <option>${state}</option> `
+        }); 
+       
+        document.getElementById("reg-sel2").innerHTML = displayState;
+    }
+    
+}
+
+
+
 
 // First Name sort 
 let isAscFirstName = true;
@@ -171,10 +220,11 @@ function onDeleterow(data) {
     if(confirm) {
         const idForDelete = (data.id).substring(7,10);
         console.log(idForDelete);
-        const filterList = dataList.filter(data => (data.id) !== parseInt(idForDelete));  
+        dataList = dataList.filter(data => (data.id) !== parseInt(idForDelete));  
+      
         deletemsg();
         // window.confirm("Deleted Successfully!!!!");
-        pagination(filterList);   
+        pagination(dataList);   
            
     }
     // console.log("click on this button" , data.id);
@@ -188,7 +238,9 @@ function onEditrow(data) {
     if(confirm) {
         const idForEdit = (data.id).substring(5,10);
         console.log(idForEdit);
+        console.log(dataList);
         const dataToEdit = dataList.filter(data => (data.id) === parseInt(idForEdit)); 
+       
         // console.log("hi",dataToEdit[0]);
         const editUser = dataToEdit[0];
         idToDelete = editUser.id;
@@ -212,20 +264,19 @@ function onEditrow(data) {
         if(other === editUser.gender) {
             document.getElementById('other').checked = true;
         }
-        // document.getElementsByName('gender').value = editUser.gender;
-               
+                      
         document.getElementById('reg-phoneNo').value = editUser.phoneNo;
         document.getElementById('reg-sel1').value = editUser.country;
-        document.getElementById('reg-sel2').value = editUser.state;
-
-      //  const state = document.getElementById('reg-sel2').options.selectedIndex
-        // if(state === editUser.state) {
-            /* forEach(state => {
-                
-            }) */
-        // }
+       
+        stateSelection(editUser.country);
+       
+        const stateIndex = editUser.country === 'India' ? indiaState.indexOf(editUser.state): australiaState.indexOf(editUser.state);
+        document.getElementById('reg-sel2').options.selectedIndex = stateIndex;
+        
         document.getElementById('reg-city').value = editUser.city;
+
         show();
+       
        
            
     }   
@@ -241,11 +292,69 @@ function show() {
     document.getElementById('popup').style.display = 'block';
 };
 
+function validateId(id) {
+    const re = /^[0-9]{2}$/;
+    const errorid = document.getElementById('error-id');
+    const errormessageunique = document.getElementById('error-unique');
+    errormessageunique.style.display = 'none'; 
+
+    if(!re.test(id.value)) {
+
+        errorid.style.display = 'block';
+        errormessageunique.style.display = 'none'; 
+    } else {
+       
+        errorid.style.display = 'none';
+       const user = dataList.filter(data => data.id === parseInt(id.value));
+    //    console.log("idddd",user[0]);
+       if(user.length > 0  ) {
+           errormessageunique.style.display = 'block';
+       }              
+    }
+}
+
+function setStyles(regex, field, errorMessage) {
+    if(!regex.test(field.value)) {
+        errorMessage.style.display = 'block';  
+    } else {
+        errorMessage.style.display = 'none';
+    }
+}
+
+function validateName(name, error) {
+    const re = /^[a-zA-Z]{2,15}$/;
+    const errorname = document.getElementById(error);
+    setStyles(re, name, errorname);
+}
+function validateEmail(email){
+    const re =  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+    const erroremail = document.getElementById('error-email');
+    setStyles(re, email, erroremail);
+  
+}
+function validatePhoneNumber(phoneNo){
+    const re =  /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+    const errorphoneno = document.getElementById('error-phoneno');
+    setStyles(re, phoneNo, errorphoneno);
+  
+}
+function validateCity(city) {
+    const re = /^[a-zA-Z]{2,20}$/;
+    const errorcity = document.getElementById('error-city');
+    setStyles(re, city, errorcity);
+}
+
+
+
 // Add User Save 
 
 function saveForm() {
-   
-    
+    validateId(document.getElementById('reg-id'));
+    validateName(document.getElementById('reg-firstname'), 'error-fn');
+    validateName(document.getElementById('reg-lastname'), 'error-ln');
+    validateEmail(document.getElementById('reg-email'));
+    // validatePhoneNumber(document.getElementById('reg-phoneno'));
+    validateCity(document.getElementById('reg-city'));
 
     if(idToDelete !== '') {
         dataList = dataList.filter(data => (data.id) !== parseInt(idToDelete));
@@ -253,6 +362,7 @@ function saveForm() {
     } 
     
     const id = document.getElementById('reg-id').value;
+    
   
     const salutation = document.getElementById('reg-salutation').value;
     
@@ -266,12 +376,13 @@ function saveForm() {
    
     let newEntry = {};
     
-    newEntry.id = id;
+    newEntry.id = parseInt(id);
     newEntry.salutation = salutation;
     newEntry.firstName = firstName;
     newEntry.lastName = lastName; 
     newEntry.email = email;
-    newEntry.phoneNo = phoneNo;
+    newEntry.phoneNo = parseInt(phoneNo);
+    
 
     var date = new Date();
     var dd = String(date.getDate()).padStart(2, '0');
@@ -288,10 +399,10 @@ function saveForm() {
     newEntry.state = state;
     const city = document.getElementById('reg-city').value;
     newEntry.city = city;
-    console.log(newEntry);
+    // console.log(newEntry);
     dataList.push(newEntry);
     pagination(dataList);
-    console.log(dataList);
+    // console.log(dataList);
     addAlert();
     document.getElementById('popup').reset();
     hide();
@@ -302,133 +413,29 @@ function saveForm() {
     
     const selectedCountry = document.getElementById('reg-sel1');
     selectedCountry.addEventListener('click', (e) => {
-        let displayState = '';
-        console.log(displayState);
-        if(selectedCountry.value === 'India') {
-            document.getElementById('reg-sel2').value = '';
-            const indiaState = ['Kerala','Tamil Nadu','Karnataka',
-                           'Telangana','Andhra Pradesh','Arunachal Pradesh',
-                           'Assam','Bihar', 'Chhattisgarh', 'Goa', 'Gujarat'];
-           
-            indiaState.forEach( state => {
-                displayState += `
-                <option>${state}</option>`
-            }); 
-            console.log(displayState);
-            document.getElementById("reg-sel2").innerHTML = displayState;
-
-        } 
-        if(selectedCountry.value === 'Australia') {
-            document.getElementById('reg-sel2').value = '';
-            const australiaState = ['Victoria','New South Wales','Queensland','South Australia','Tasmania','Western Australia'];
-            australiaState.forEach( state => {
-                displayState += `
-                <option>${state}</option> `
-            }); 
-            console.log(displayState);
-            document.getElementById("reg-sel2").innerHTML = displayState;
-        }
+        stateSelection(selectedCountry.value);
         
     }) 
 
+    
+
         const id = document.getElementById('reg-id');
-        id.addEventListener('blur',(e) => {
-           
-                const re = /^[0-9]{2}$/;
-                const errorid = document.getElementById('error-id');
-                const errormessageunique = document.getElementById('error-unique');
-                errormessageunique.style.display = 'none'; 
-
-                if(!re.test(id.value)) {
-
-                    errorid.style.display = 'block';
-                    errormessageunique.style.display = 'none'; 
-                } else {
-                   
-                    errorid.style.display = 'none';
-                   const user = dataList.filter(data => data.id === parseInt(id.value));
-                //    console.log("idddd",user[0]);
-                   if(user.length > 0  ) {
-                       errormessageunique.style.display = 'block';
-                   }              
-                }
-            }
-            );
+        id.addEventListener('blur',(e) => validateId(id));
  
         const firstName = document.getElementById('reg-firstname');
-
-        firstName.addEventListener('blur',(e) => {
-           
-            const re = /^[a-zA-Z]{2,15}$/;
-            const errorfn = document.getElementById('error-fn');
-            // console.log("er",errorfn);
-            if(!re.test(firstName.value)) {
-                
-                errorfn.style.display = 'block';
-                
-            } else {
-                errorfn.style.display = 'none';
-            }
-        } );  
+        firstName.addEventListener('blur',(e) => validateName(firstName, 'error-fn'));  
 
         const lastName = document.getElementById('reg-lastname');
-
-        lastName.addEventListener('blur',(e) => {
-           
-            const re = /^[a-zA-Z]{2,15}$/;
-            const errorln = document.getElementById('error-ln');
-            if(!re.test(lastName.value)) {
-                
-                errorln.style.display = 'block';
-                
-            } else {
-                errorln.style.display = 'none';
-            }
-        } );  
+        lastName.addEventListener('blur',(e) => validateName(lastName, 'error-ln'));  
  
         const email = document.getElementById('reg-email');
-        email.addEventListener('blur',(e) => {
-           
-            const re =  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-            const erroremail = document.getElementById('error-email');
-           
-            if(!re.test(email.value)) {
-                
-                erroremail.style.display = 'block';
-                
-            } else {
-                erroremail.style.display = 'none';
-            }
-        } );  
+        email.addEventListener('blur',(e) => validateEmail(email));  
   
         const phoneNo = document.getElementById('reg-phoneNo');
-        phoneNo.addEventListener('blur',(e) => {
-           
-            const re =  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-            const errorphoneno = document.getElementById('error-phoneno');
-           
-            if(!re.test(phoneNo.value)) {
-                
-                errorphoneno.style.display = 'block';
-                
-            } else {
-                errorphoneno.style.display = 'none';
-            }
-        } );  
+        phoneNo.addEventListener('blur',(e) => validatePhoneNumber(phoneNo));  
   
         const city = document.getElementById('reg-city');
-        city.addEventListener('blur',(e) => {
-           
-            const re = /^[a-zA-Z]{2,15}$/;
-            const errorcity = document.getElementById('error-city');
-            if(!re.test(city.value)) {
-                
-                errorcity.style.display = 'block';
-                
-            } else {
-                errorcity.style.display = 'none';
-            }
-        } );  
+        city.addEventListener('blur',(e) => validateCity(city));  
    
     function deletemsg() {
         document.querySelector(".removed").style.visibility = "visible";

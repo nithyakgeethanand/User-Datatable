@@ -40,7 +40,7 @@
     },
     {
         "id" : 4,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Skyler",
         "lastName" : " White",
         "email" : "skyler@gmail.com",
@@ -66,7 +66,7 @@
     },
     {
         "id" : 6,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Polly",
         "lastName" : "Shelby",
         "email" : "polly@gmail.com",
@@ -118,7 +118,7 @@
     },
     {
         "id" : 10,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Chloe",
         "lastName" : "Decker",
         "email" : "chole@gmail.com",
@@ -131,7 +131,7 @@
     },
     {
         "id" : 11,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Mazikeen",
         "lastName" : "Maze",
         "email" : "maze@gmail.com",
@@ -144,7 +144,7 @@
     },
     {
         "id" : 12,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Trixie",
         "lastName" : "Espinoza",
         "email" : "trixie@gmail.com",
@@ -157,7 +157,7 @@
     },
     {
         "id" : 13,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Ella ",
         "lastName" : "Lopez",
         "email" : "ella@gmail.com",
@@ -170,7 +170,7 @@
     },
     {
         "id" : 14,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName":"Charlotte  ",
         "lastName" : "Richards",
         "email" : "ella@gmail.com",
@@ -209,7 +209,7 @@
     },
     {
         "id" : 17,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Eleven",
         "lastName" : "Hopper",
         "email" : "eleven@gmail.com",
@@ -248,7 +248,7 @@
     },
     {
         "id" : 20,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Nancy",
         "lastName" : "Wheeler",
         "email" : "nancy@gmail.com",
@@ -287,7 +287,7 @@
     },
     {
         "id" : 23,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Raquel",
         "lastName" : "Murillo",
         "email" : "raquel@gmail.com",
@@ -313,7 +313,7 @@
     },
     {
         "id" : 25,
-        "salutation" : "Miss",
+        "salutation" : "Ms",
         "firstName" : "Monica",
         "lastName" : "Gaztambide",
         "email" : "monica@gmail.com",
