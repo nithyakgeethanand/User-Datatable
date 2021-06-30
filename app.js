@@ -71,32 +71,20 @@ function displayTable(data) {
         pagination(dataList);
     })
 
-
-document.getElementById("previ").addEventListener("click", function () {
-    // alert("Hai");
-    // const no = parseInt(document.getElementById('page').value);
-    const no = Math.floor(dataList.length/3);
-    const start = page * no; //0
-    const end = page * no + no; //8
-    console.log('pagination',start,end);
-    const action = dataList.slice(start, end);
-    document.getElementById("next").style.display = 'block';
-    pageno = Math.floor(dataList.length/3);
-    console.log(action);
-    displayTable(action);
-})
-document.getElementById("next").addEventListener("click", function () {
-  
-    const start = pageno;
-    pageno = pageno + pageno;
-    const end = pageno;
-    const action = dataList.slice(start, end);
-    if(dataList.length-end < 0 ) {
-        document.getElementById("next").style.display = 'none';
+    function pagenationValue(number) {
+        let page = Math.floor(dataList.length/3);
+        let start = 0;
+        let end = 0;
+        for(let i = 0; i < number-1; i++) {
+            start += page;
+        }
+        for(let i = 0; i < number; i++) {
+            end += page; 
+        }
+        const action = dataList.slice(start, end);
+        displayTable(action);
     }
-    console.log(action);
-    displayTable(action);
-})
+
 document.getElementById("all").addEventListener("click", function () {
     displayTable(dataList);
 })

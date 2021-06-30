@@ -155,9 +155,14 @@
         <tbody id="output"></tbody>
     </table>
   
-      <div class="pagination">
-          <a href="#" id="previ" style="background: #56ABF4; width: 90px; margin-right: 10px; padding-right: 10px; ">Previous</a>
-          <a href="#" id="next" style="background: #56ABF4; width: 65px; margin-right: 10px;">Next</a>
+      <div class="pagination" id="pagewrapper">
+          <!-- <a href="#" id="previ" style="background: #56ABF4; width: 90px; margin-right: 10px; padding-right: 10px; ">Previous</a>
+          <a href="#" id="next" style="background: #56ABF4; width: 65px; margin-right: 10px;">Next</a> -->
+          <!-- <a href="#" id="three" style="background: #56ABF4; width: 65px; margin-right: 10px;">3</a> -->
+          <button onclick="pagenationValue(1)" id="one" style="background: #56ABF4; width: 50px; margin-right: 10px;">1</button>
+          <button onclick="pagenationValue(2)" id="two" style="background: #56ABF4; width: 50px; margin-right: 10px;">2</button>
+          <button onclick="pagenationValue(3)" id="three" style="background: #56ABF4; width: 50px; margin-right: 10px;">3</button>
+          <button onclick="pagenationValue(4)" id="four" style="background: #56ABF4; width: 50px; margin-right: 10px;">4</button>
           <a href="#" id="all" style="background: #56ABF4; width: 50px; margin-right: 10px;">All</a>
       </div>
 
